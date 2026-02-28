@@ -1,0 +1,5 @@
+{
+  "name": "CommitAI",
+  "description": "AI-powered meeting assistant that extracts commitments and tasks from meetings and emails.",
+  "requestFramePermissions": []
+}
