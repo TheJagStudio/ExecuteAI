@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiGet } from '../api';
 
 export function Sidebar({ activeTab, setActiveTab, isCollapsed, setIsCollapsed }) {
   const [expandedGroups, setExpandedGroups] = useState(['dashboard']);
@@ -163,6 +164,13 @@ export function Sidebar({ activeTab, setActiveTab, isCollapsed, setIsCollapsed }
 }
 
 export function Header({ title }) {
+  const [profile, setProfile] = React.useState(null);
+  React.useEffect(() => {
+    apiGet('/profile/').then(setProfile).catch(() => {});
+  }, []);
+  const name = profile?.full_name || 'Sarah Chen';
+  const email = profile?.email || 'sarah@company.com';
+  const seed = profile?.first_name || 'Sarah';
   return (
     <header className="flex items-center justify-between px-8 py-6 bg-transparent">
       <div className="flex-1 max-w-xl">
@@ -179,11 +187,11 @@ export function Header({ title }) {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3 bg-white pl-3 pr-1 py-1 rounded-full shadow-sm border border-slate-200">
           <div className="flex flex-col items-end">
-            <span className="text-xs font-bold text-slate-900 leading-none">Sarah Chen</span>
-            <span className="text-[10px] text-slate-400">sarah@company.com</span>
+            <span className="text-xs font-bold text-slate-900 leading-none">{name}</span>
+            <span className="text-[10px] text-slate-400">{email}</span>
           </div>
           <img 
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" 
+            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`} 
             alt="User Profile" 
             className="w-8 h-8 rounded-full border border-slate-100"
           />

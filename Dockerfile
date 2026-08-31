@@ -12,8 +12,9 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 COPY backend /app
 
 RUN python manage.py collectstatic --noinput \
-    && python manage.py migrate --noinput
+    && python manage.py migrate --noinput \
+    && python manage.py seed_demo
 
 EXPOSE 7860
 
-CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn core.wsgi:application --bind 0.0.0.0:${PORT:-7860} --workers 2 --timeout 120"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py seed_demo && gunicorn core.wsgi:application --bind 0.0.0.0:${PORT:-7860} --workers 2 --timeout 120"]
