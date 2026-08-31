@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
+import { apiGet, apiPatch } from '../api';
 
 const tabs = [
   { id: 'profile', label: 'Profile', icon: User },
@@ -27,6 +28,23 @@ export function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
   const [autoExtract, setAutoExtract] = useState(true);
   const [sensitivity, setSensitivity] = useState(75);
+  const [form, setForm] = useState({ first_name: '', last_name: '', email: '', role: '' });
+  const [saved, setSaved] = useState('');
+
+  React.useEffect(() => {
+    apiGet('/profile/').then((p) => {
+      setForm({ first_name: p.first_name, last_name: p.last_name, email: p.email, role: p.role });
+      setAutoExtract(p.auto_extract);
+      setSensitivity(p.sensitivity);
+    });
+  }, []);
+
+  const saveProfile = async () => {
+    const p = await apiPatch('/profile/', { ...form, auto_extract: autoExtract, sensitivity });
+    setForm({ first_name: p.first_name, last_name: p.last_name, email: p.email, role: p.role });
+    setSaved('Saved to Django');
+    setTimeout(() => setSaved(''), 2000);
+  };
 
   return (
     <div className="h-full flex flex-col">
@@ -106,7 +124,8 @@ export function SettingsPage() {
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">First Name</label>
                         <input 
                           type="text" 
-                          defaultValue="Sarah"
+                          value={form.first_name}
+                          onChange={(e) => setForm({ ...form, first_name: e.target.value })}
                           className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         />
                       </div>
@@ -114,7 +133,8 @@ export function SettingsPage() {
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Last Name</label>
                         <input 
                           type="text" 
-                          defaultValue="Chen"
+                          value={form.last_name}
+                          onChange={(e) => setForm({ ...form, last_name: e.target.value })}
                           className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         />
                       </div>
@@ -126,7 +146,8 @@ export function SettingsPage() {
                         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input 
                           type="email" 
-                          defaultValue="sarah@company.com"
+                          value={form.email}
+                          onChange={(e) => setForm({ ...form, email: e.target.value })}
                           className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         />
                       </div>
@@ -136,7 +157,8 @@ export function SettingsPage() {
                       <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Role</label>
                       <input 
                         type="text" 
-                        defaultValue="Project Manager"
+                        value={form.role}
+                        onChange={(e) => setForm({ ...form, role: e.target.value })}
                         className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                       />
                     </div>
@@ -146,8 +168,8 @@ export function SettingsPage() {
                     <button className="px-6 py-2.5 text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors">
                       Cancel
                     </button>
-                    <button className="px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-secondary transition-all">
-                      Save Changes
+                    <button onClick={saveProfile} className="px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-secondary transition-all">
+                      {saved || 'Save Changes'}
                     </button>
                   </div>
                 </div>
@@ -286,7 +308,7 @@ export function SettingsPage() {
                         </div>
                       </div>
                       <button 
-                        onClick={() => setAutoExtract(!autoExtract)}
+                        onClick={() => { const next = !autoExtract; setAutoExtract(next); apiPatch('/profile/', { auto_extract: next }); }}
                         className={cn(
                           "w-12 h-6 rounded-full relative transition-colors duration-200",
                           autoExtract ? "bg-primary" : "bg-slate-300"
@@ -314,7 +336,11 @@ export function SettingsPage() {
                           min="0" 
                           max="100" 
                           value={sensitivity}
-                          onChange={(e) => setSensitivity(parseInt(e.target.value))}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value, 10);
+                            setSensitivity(value);
+                            apiPatch('/profile/', { sensitivity: value });
+                          }}
                           className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
                         />
                         <div className="flex justify-between mt-4">
