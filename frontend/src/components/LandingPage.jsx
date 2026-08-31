@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 
-export function LandingPage({ onGetStarted }) {
+export function LandingPage() {
+  const navigate = useNavigate();
+  const onGetStarted = () => navigate('/onboarding');
   return (
     <div className="min-h-screen bg-[#F3F4F6] text-gray-900 font-sans selection:bg-[#6D28D9]/20 selection:text-[#6D28D9]">
       {/* Material Symbols Import */}
@@ -22,7 +25,13 @@ export function LandingPage({ onGetStarted }) {
             <a className="hover:text-[#6D28D9] transition-colors" href="#pricing">Pricing</a>
           </div>
           <div className="flex items-center gap-4">
-            <button className="hidden md:block text-sm font-medium hover:text-[#6D28D9] transition-colors">Log In</button>
+            <button
+              type="button"
+              onClick={() => navigate('/dashboard')}
+              className="hidden md:block text-sm font-medium hover:text-[#6D28D9] transition-colors"
+            >
+              Log In
+            </button>
             <button 
               onClick={onGetStarted}
               className="bg-[#6D28D9] hover:bg-[#5B21B6] text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-lg shadow-[#6D28D9]/30"
