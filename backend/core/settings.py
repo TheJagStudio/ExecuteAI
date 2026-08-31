@@ -86,8 +86,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
-supabase_host = os.environ.get("SUPABASE_DB_HOST")
-if supabase_host:
+_UNSET = {"", "CHANGE_ME", "changeme", "none", "null"}
+supabase_host = (os.environ.get("SUPABASE_DB_HOST") or "").strip()
+if supabase_host and supabase_host not in _UNSET:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
