@@ -14,7 +14,7 @@ pinned: false
 
 ExecuteAI is an advanced AI-powered assistant designed to silently monitor your business communications—Google Meet calls, Zoom, and Gmail—extracting action items, commitments, and hidden promises.
 
-This repository serves the production React frontend from Django templates and static files. All app routes (`/`, `/onboarding`, `/dashboard`, `/meetings`, `/tasks`, `/calendar`, `/analytics`, `/integrations`, `/settings`, `/help`) are handled by Django's SPA catch-all and React Router.
+This repository serves the production React frontend from Django templates and static files, with a local SQLite database. All app routes (`/`, `/onboarding`, `/dashboard`, `/meetings`, `/tasks`, `/calendar`, `/analytics`, `/integrations`, `/settings`, `/help`) are handled by Django's SPA catch-all and React Router.
 
 ## Local development
 

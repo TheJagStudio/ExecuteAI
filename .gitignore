@@ -6,3 +6,4 @@ backend/db.sqlite3
 .env
 *.pyc
 __pycache__/
+**/__pycache__/

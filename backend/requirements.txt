@@ -2,7 +2,6 @@ django>=5.0
 django-cors-headers
 djangorestframework
 django-import-export
-psycopg2-binary
 python-dotenv
 whitenoise
 gunicorn

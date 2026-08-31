@@ -86,26 +86,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
-_UNSET = {"", "CHANGE_ME", "changeme", "none", "null"}
-supabase_host = (os.environ.get("SUPABASE_DB_HOST") or "").strip()
-if supabase_host and supabase_host not in _UNSET:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("SUPABASE_DB_NAME"),
-            "USER": os.environ.get("SUPABASE_DB_USER"),
-            "PASSWORD": os.environ.get("SUPABASE_DB_PASSWORD"),
-            "HOST": supabase_host,
-            "PORT": os.environ.get("SUPABASE_DB_PORT", "5432"),
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
