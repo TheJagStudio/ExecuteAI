@@ -190,6 +190,8 @@ export function Header({ title }) {
         </div>
         
         <button 
+          type="button"
+          onClick={() => { window.location.href = '/'; }}
           className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
           title="Logout"
         >

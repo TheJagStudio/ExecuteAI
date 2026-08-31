@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:django": "vite build && python3 ../backend/copy_frontend.py",
     "preview": "vite preview",
     "clean": "rm -rf dist"
   },
@@ -21,6 +22,7 @@
     "motion": "^12.34.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.8.2",
     "recharts": "^3.7.0",
     "tailwind-merge": "^3.5.0",
     "vite": "^6.2.0"

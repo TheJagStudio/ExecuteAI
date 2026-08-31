@@ -11,9 +11,12 @@ import {
   ShieldCheck,
   Lock
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '../lib/utils';
 
-export function OnboardingPage({ onComplete }) {
+export function OnboardingPage() {
+  const navigate = useNavigate();
+  const onComplete = () => navigate('/dashboard');
   const [step, setStep] = useState(1);
   const [selectedTools, setSelectedTools] = useState([]);
 
